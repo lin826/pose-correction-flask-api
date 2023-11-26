@@ -17,7 +17,6 @@ conda activate <VENV_NAME>
 ## Local Installation and Run
 
 ```sh
-git submodule update --init --recursive
 pip install -r requirements.txt
 bash setup.sh
 python main.py --host <HOST_IP> --port <PORT> --size <MULTITHREAD_SIZE>
@@ -26,7 +25,6 @@ python main.py --host <HOST_IP> --port <PORT> --size <MULTITHREAD_SIZE>
 ## Docker Deployment
 
 ```sh
-git submodule update --init --recursive
 docker build -t pose-correction . -f Dockerfile
 docker run -p 8000:8000 --name pytorch-container --gpus all pose-correction
 ```
@@ -38,9 +36,15 @@ Either image or video can use the same script:
 ```sh
 curl -v -F tmp_file=@/<FILE_PATH> -k http://127.0.0.1:8000/predict
 ```
-
-## Demo
-
+The expected result is a JSON object with the following structure:
+```
+{"pose": Detected pose, "result": Is the pose correct or not}
+```
+For example, you can download an example video of [correct lunge](https://github.com/huguesvinzant/Motion-Correction/blob/master/PoseCorrection/Data/Videos/LUNGE_C.mp4) and run the following command
 ```sh
-curl -v -F tmp_file=@$(pwd)/MotionCorrection/PoseCorrection/Data/Videos/LUNGE_NLE.mp4  -k http://katsudon.csail.mit.edu:8000/predict
+curl -v -F tmp_file=@./LUNGE_C.mp4 -k http://127.0.0.1:8000/predict
+```
+You should see the following result.
+```
+{"pose": "LUNGE", "result": "correct"}
 ```
