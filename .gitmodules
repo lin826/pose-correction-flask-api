@@ -1,0 +1,3 @@
+[submodule "MotionCorrection"]
+	path = MotionCorrection
+	url = https://github.com/huguesvinzant/Motion-Correction.git
